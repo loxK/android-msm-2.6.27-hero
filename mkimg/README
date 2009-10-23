@@ -1,0 +1,30 @@
+
+1. These scripts won't build any source, so please ensure your device and kernel are ready.
+
+2. Before running these scripts, please ensure the Android environment was setup.
+
+3. The scripts:
+
+mkboot.sh	: create boot.img
+
+	It will auto find the rootfs in Android output folder and kernel image in arm folder to
+	generate boot image.
+
+	Copying rootfs and kernel image to script folder is accepted.
+
+mksystem.sh	: create system.img and userdata.img
+
+	It will auto find the system and data directories in Android output folder to generate
+	the two images.
+
+	Copying system and data directories to script folder is accepted.
+
+mkfastboot.sh	: create recovery.img with fastboot
+
+	Normally this script is no more necessary because fastboot was moved to bootloader.
+
+fastboot.sh	: create boot.img and then flash/download it
+
+	Create boot.img and, if with -f option, flash it to the device boot partition; if without
+	any option, just download it to device and reboot.
+

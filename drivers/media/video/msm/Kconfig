@@ -1,0 +1,25 @@
+comment "Camera Sensor Selection"
+config MT9T013
+	bool "Sensor mt9t013 (BAYER 3M)"
+	---help---
+	  MICRON 3M Bayer Sensor with AutoFocus
+
+config MT9P012
+	bool "Sensor mt9p012 (BAYER 5M)"
+	---help---
+	  MICRON 5M Bayer Sensor with AutoFocus
+
+config MT9D112
+	bool "Sensor mt9d112 (YUV   2M)"
+	---help---
+	  MICRON 2M YUV Sensor
+	  
+config S5K4B2FX
+	bool "Sensor s5k4b2fx (BAYER 2M)"
+	---help---
+	  SAMSUNG 2M BAYER Sensor
+
+config S5K3E2FX
+	bool "Sensor s5k3e2fx (BAYER 5M)"
+	---help---
+	  SAMSUNG 5M Bayer Sensor

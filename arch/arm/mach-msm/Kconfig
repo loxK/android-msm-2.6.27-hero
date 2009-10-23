@@ -1,0 +1,523 @@
+if ARCH_MSM7XXX
+
+config BUILD_CIQ
+	bool "Build in CIQ fixes"
+	default n
+	help
+	  For CIQ we need to do some additional fixes.
+
+config BUILD_OMA_DM
+	bool "Build in OMA-DM fixes"
+	default n
+	help
+	  For OMA-DM we need to do some additional fixes.
+	  
+choice
+        prompt "Qualcomm MSM7K series SoC"
+        depends on ARCH_MSM7XXX
+        default ARCH_MSM7201A
+
+config ARCH_MSM7200A
+        bool "Qualcomm MSM7200A"
+
+config ARCH_MSM7201A
+        bool "Qualcomm MSM7201A"
+
+config ARCH_MSM7225
+        bool "Qualcomm MSM7225"
+
+config ARCH_MSM7501A
+        bool "Qualcomm MSM7501A"
+
+endchoice
+
+config TURBO_MODE
+	bool "Turbo mode"
+	depends on ARCH_MSM7225 || ARCH_MSM7200A || ARCH_MSM7501A
+	default y
+	help
+	  This option is used to indicate hardware support for running the
+	  memory bus at a higher speed.
+
+config MACH_HALIBUT
+	depends on ARCH_MSM7201A
+	default y
+	bool "Halibut Board (QCT SURF7201A)"
+	help
+	  Support for the Qualcomm SURF7201A eval board.
+
+config MACH_TROUT
+	depends on ARCH_MSM7201A
+	default y
+	bool "Trout"
+
+config MACH_SAPPHIRE
+	depends on ARCH_MSM7201A || ARCH_MSM7200A
+	default y
+	bool "Sapphire"
+
+config MACH_HERO
+	depends on ARCH_MSM7200A
+	default n
+	bool "Hero"
+
+config HTC_BATTCHG
+	depends on ARCH_MSM7XXX
+	default y
+	bool "HTC battery / charger driver"
+
+config HTC_BATTCHG_SMEM
+	depends on HTC_BATTCHG
+	default n
+	bool "Read Battery Info via SMEM"
+
+config HTC_PWRSINK
+	depends on MSM_SMD
+	default y
+	bool "HTC Power Sink Driver"
+
+config PERFLOCK
+	depends on CPU_FREQ
+	depends on ARCH_MSM7200A || ARCH_MSM7225 || ARCH_MSM7501A
+	default n
+	bool "HTC Performance Lock"
+
+config PERFLOCK_BOOT_LOCK
+	depends on PERFLOCK
+	depends on ARCH_MSM7200A || ARCH_MSM7225 || ARCH_MSM7501A
+	default n
+	bool "Boot Time Performance Lock"
+
+config PERFLOCK_SCREEN_POLICY
+	depends on PERFLOCK
+	depends on ARCH_MSM7200A || ARCH_MSM7225 || ARCH_MSM7501A
+	default n
+	bool "Change Cpufreq Policy while Screen ON/OFF"
+
+config PERFLOCK_SCREEN_ON_MIN
+	depends on PERFLOCK_SCREEN_POLICY
+	int "Minimum speed while screen on"
+	default MSM_CPU_FREQ_SCALING_MIN
+
+config PERFLOCK_SCREEN_ON_MAX
+	depends on PERFLOCK_SCREEN_POLICY
+	int "Maximum speed while screen on"
+	default MSM_CPU_FREQ_SCALING_MAX
+
+config PERFLOCK_SCREEN_OFF_MIN
+	depends on PERFLOCK_SCREEN_POLICY
+	int "Minimum speed while screen off"
+	default MSM_CPU_FREQ_SCALING_MIN
+
+config PERFLOCK_SCREEN_OFF_MAX
+	depends on PERFLOCK_SCREEN_POLICY
+	int "Maximum speed while screen off"
+	default MSM_CPU_FREQ_SCALING_MIN
+
+config MSM_AMSS_VERSION
+	int
+	default 6210 if MSM_AMSS_VERSION_6210
+	default 6220 if MSM_AMSS_VERSION_6220
+	default 6225 if MSM_AMSS_VERSION_6225
+	default 6335 if MSM_AMSS_VERSION_6335
+	default 6340 if MSM_AMSS_VERSION_6340
+	default 6355 if MSM_AMSS_VERSION_6355
+	default 4001 if MSM_AMSS_VERSION_4001
+	default 1320 if MSM_AMSS_VERSION_1320
+	default 1330 if MSM_AMSS_VERSION_1330
+	default 1340 if MSM_AMSS_VERSION_1340
+	default 1355 if MSM_AMSS_VERSION_1355
+	default 4110 if MSM_AMSS_VERSION_4110
+	default 4410 if MSM_AMSS_VERSION_4410
+
+choice
+	prompt "AMSS modem firmware version"
+
+	config MSM_AMSS_VERSION_6210
+		bool "6.2.10"
+
+	config MSM_AMSS_VERSION_6220
+		bool "6.2.20"
+
+	config MSM_AMSS_VERSION_6225
+		bool "6.2.20 + New ADSP"
+
+	config MSM_AMSS_VERSION_6335
+		bool "6.3.35"
+
+	config MSM_AMSS_VERSION_6340
+		bool "6.3.40"
+
+	config MSM_AMSS_VERSION_6355
+		bool "6.3.55"
+
+	config MSM_AMSS_VERSION_4001
+		bool "6.2.20 + Low Power ADSP"
+
+	config MSM_AMSS_VERSION_1320
+		bool "1.3.20"
+
+	config MSM_AMSS_VERSION_1330
+		bool "1.3.30"
+
+	config MSM_AMSS_VERSION_1340
+		bool "1.3.40"
+
+	config MSM_AMSS_VERSION_1355
+		bool "1.3.55"
+
+	config MSM_AMSS_VERSION_4110
+		bool "4.1.10"
+
+	config MSM_AMSS_VERSION_4410
+		bool "4.4.10"
+
+endchoice
+config MSM_AMSS_SUPPORT_256MB_EBI1
+	default y if MSM_AMSS_VERSION_6355
+	bool "AMSS that support unified 128MB and 256MB EBI1"
+
+config MSM_DEBUG_UART
+	int
+	default 1 if MSM_DEBUG_UART1
+	default 2 if MSM_DEBUG_UART2
+	default 3 if MSM_DEBUG_UART3
+
+choice
+	prompt "Debug UART"
+
+	default MSM_DEBUG_UART_NONE
+
+	config MSM_DEBUG_UART_NONE
+		bool "None"
+
+	config MSM_DEBUG_UART1
+		bool "UART1"
+
+	config MSM_DEBUG_UART2
+		bool "UART2"
+
+	config MSM_DEBUG_UART3
+		bool "UART3"
+endchoice
+
+comment "MSM Board Type"
+	depends on ARCH_MSM7XXX
+
+config TROUT_H2W
+	tristate "HTC 2 Wire detection driver"
+	default n
+	help
+	 Provides support for detecting HTC 2 wire devices, such as wired
+	 headset, on the trout platform. Can be used with the msm serial
+	 debugger, but not with serial console.
+
+choice
+	prompt "Default Timer"
+	default MSM7XXX_USE_GP_TIMER
+
+	config MSM7XXX_USE_GP_TIMER
+		bool "GP Timer"
+	help
+	  Low resolution timer that allows power collapse from idle.
+
+	config MSM7XXX_USE_DG_TIMER
+		bool "DG Timer"
+	help
+	  High resolution timer.
+endchoice
+
+choice
+	prompt "Suspend sleep mode"
+	default MSM7XXX_SLEEP_MODE_POWER_COLLAPSE_SUSPEND
+	help
+	  Allows overriding the sleep mode used. Leave at power
+	  collapse suspend unless the arm9 image has problems.
+
+	config MSM7XXX_SLEEP_MODE_POWER_COLLAPSE_SUSPEND
+		bool "Power collapse suspend"
+	help
+	  Lowest sleep state. Returns through reset vector.
+
+	config MSM7XXX_SLEEP_MODE_POWER_COLLAPSE
+		bool "Power collapse"
+	help
+	  Sleep state that returns through reset vector.
+
+	config MSM7XXX_SLEEP_MODE_APPS_SLEEP
+		bool "Apps Sleep"
+
+	config MSM7XXX_SLEEP_MODE_RAMP_DOWN_AND_WAIT_FOR_INTERRUPT
+		bool "Ramp down cpu clock and wait for interrupt"
+
+	config MSM7XXX_SLEEP_WAIT_FOR_INTERRUPT
+		bool "Wait for interrupt"
+endchoice
+
+config MSM7XXX_SLEEP_MODE
+	int
+	default 0 if MSM7XXX_SLEEP_MODE_POWER_COLLAPSE_SUSPEND
+	default 1 if MSM7XXX_SLEEP_MODE_POWER_COLLAPSE
+	default 2 if MSM7XXX_SLEEP_MODE_APPS_SLEEP
+	default 3 if MSM7XXX_SLEEP_MODE_RAMP_DOWN_AND_WAIT_FOR_INTERRUPT
+	default 4 if MSM7XXX_SLEEP_WAIT_FOR_INTERRUPT
+
+choice
+	prompt "Idle sleep mode"
+	default MSM7XXX_IDLE_SLEEP_MODE_POWER_COLLAPSE
+	help
+	  Allows overriding the sleep mode used from idle. Leave at power
+	  collapse suspend unless the arm9 image has problems.
+
+	config MSM7XXX_IDLE_SLEEP_MODE_POWER_COLLAPSE_SUSPEND
+		bool "Power collapse suspend"
+	help
+	  Lowest sleep state. Returns through reset vector.
+
+	config MSM7XXX_IDLE_SLEEP_MODE_POWER_COLLAPSE
+		bool "Power collapse"
+	help
+	  Sleep state that returns through reset vector.
+
+	config MSM7XXX_IDLE_SLEEP_MODE_APPS_SLEEP
+		bool "Apps Sleep"
+
+	config MSM7XXX_IDLE_SLEEP_MODE_RAMP_DOWN_AND_WAIT_FOR_INTERRUPT
+		bool "Ramp down cpu clock and wait for interrupt"
+
+	config MSM7XXX_IDLE_SLEEP_WAIT_FOR_INTERRUPT
+		bool "Wait for interrupt"
+endchoice
+
+config MSM7XXX_IDLE_SLEEP_MODE
+	int
+	default 0 if MSM7XXX_IDLE_SLEEP_MODE_POWER_COLLAPSE_SUSPEND
+	default 1 if MSM7XXX_IDLE_SLEEP_MODE_POWER_COLLAPSE
+	default 2 if MSM7XXX_IDLE_SLEEP_MODE_APPS_SLEEP
+	default 3 if MSM7XXX_IDLE_SLEEP_MODE_RAMP_DOWN_AND_WAIT_FOR_INTERRUPT
+	default 4 if MSM7XXX_IDLE_SLEEP_WAIT_FOR_INTERRUPT
+
+config MSM7XXX_IDLE_SLEEP_MIN_TIME
+	int "Minimum idle time before sleep"
+	default 20000000
+	help
+	  Minimum idle time in nanoseconds before entering low power mode.
+
+config MSM7XXX_IDLE_SPIN_TIME
+	int "Idle spin time before cpu ramp down"
+	default 80000
+	help
+	  Spin time in nanoseconds before ramping down cpu clock and entering
+	  any low power state.
+
+menuconfig MSM_IDLE_STATS
+	bool "Collect idle statistics"
+	default y
+	help
+	  Collect idle statistics and export them in proc/msm_pm_stats.
+
+if MSM_IDLE_STATS
+
+config MSM_IDLE_STATS_FIRST_BUCKET
+	int "First bucket time"
+	default 62500
+	help
+	  Upper time limit in nanosconds of first bucket.
+
+config MSM_IDLE_STATS_BUCKET_SHIFT
+	int "Bucket shift"
+	default 2
+
+config MSM_IDLE_STATS_BUCKET_COUNT
+	int "Bucket count"
+	default 10
+
+endif # MSM_IDLE_STATS
+
+config MSM_FIQ_SUPPORT
+	default y
+	bool "Enable installation of an FIQ handler."
+
+config MSM_SERIAL_DEBUGGER
+	select MSM_FIQ_SUPPORT
+	select KERNEL_DEBUGGER_CORE
+	default n
+	bool "FIQ Mode Serial Debugger"
+	help
+	  The FIQ serial debugger can accept commands even when the
+	  kernel is unresponsive due to being stuck with interrupts
+	  disabled.  Depends on the kernel debugger core in drivers/misc.
+
+config MSM_SERIAL_DEBUGGER_CONSOLE
+	depends on MSM_SERIAL_DEBUGGER
+	default n
+	bool "Console on FIQ Serial Debugger port"
+	help
+	  Enables a console so that printk messages are displayed on
+	  the debugger serial port as the occur.
+
+config MSM_SMD
+	default y
+	bool "MSM Shared Memory Driver (SMD)"
+	help
+	  Support for the shared memory interface between the apps
+	  processor and the baseband processor.  Provides access to
+	  the "shared heap", as well as virtual serial channels
+	  used to communicate with various services on the baseband
+	  processor.
+
+config MSM_ONCRPCROUTER
+	depends on MSM_SMD
+	default y
+	bool "MSM ONCRPC router support"
+	help
+	  Support for the MSM ONCRPC router for communication between
+	  the ARM9 and ARM11
+
+config MSM_RPCSERVERS
+	depends on MSM_ONCRPCROUTER
+	default y
+	bool "Kernel side RPC server bundle"
+	help
+	  none
+
+config MSM_CPU_FREQ
+	bool
+	default y if MSM_CPU_FREQ_ONDEMAND || MSM_CPU_FREQ_USERSPACE || MSM_CPU_FREQ_MSM7K ||MSM_CPU_FREQ_SCREEN
+
+choice
+	prompt "Cpufreq mode"
+	default MSM_CPU_FREQ_ONDEMAND
+	default MSM_CPU_FREQ_SCREEN
+
+	config MSM_CPU_FREQ_ONDEMAND
+		depends on CPU_FREQ_DEFAULT_GOV_ONDEMAND
+		bool "Enable ONDEMAND cpufreq govoner for"
+
+	config MSM_CPU_FREQ_USERSPACE
+                depends on CPU_FREQ_DEFAULT_GOV_USERSPACE
+                bool "Enable USERSPACE cpufreq governor for"
+
+        config MSM_CPU_FREQ_MSM7K
+                depends on CPU_FREQ_DEFAULT_GOV_MSM7K
+		bool "Enable MSM7K cpufreq governor for"
+
+	config MSM_CPU_FREQ_SCREEN
+		depends on HAS_EARLYSUSPEND
+		bool "Enable simple cpu frequency scaling"
+		help
+		  Simple cpufreq scaling based on screen ON/OFF.
+
+endchoice
+
+if MSM_CPU_FREQ_SCREEN
+
+config MSM_CPU_FREQ_SCREEN_OFF
+	int "Screen off cpu frequency"
+	default 245760
+
+config MSM_CPU_FREQ_SCREEN_ON
+	int "Screen on cpu frequency"
+	default 384000
+
+endif # MSM_CPU_FREQ_SCREEN
+
+
+if MSM_CPU_FREQ_ONDEMAND || MSM_CPU_FREQ_USERSPACE || MSM_CPU_FREQ_MSM7K
+
+config MSM_CPU_FREQ_SCALING_MAX
+	int "Max"
+	default 384000
+
+config MSM_CPU_FREQ_SCALING_MIN
+	int "Min"
+	default 245760
+
+endif # MSM_CPU_FREQ
+
+config MSM_HW3D
+	tristate "MSM Hardware 3D Register Driver"
+	default y
+	help
+	  Provides access to registers needed by the userspace OpenGL|ES
+	  library.
+
+choice
+	prompt "MSM ADSP support"
+
+	default MSM_ADSP if MSM_AMSS_VERSION_6210
+	default MSM_ADSP if MSM_AMSS_VERSION_6220
+	default MSM_ADSP if MSM_AMSS_VERSION_6225
+	default MSM_ADSP_COMP if MSM_AMSS_VERSION_6335
+	default MSM_ADSP_COMP if MSM_AMSS_VERSION_6340
+	default MSM_ADSP_COMP if MSM_AMSS_VERSION_6355
+	default MSM_ADSP if MSM_AMSS_VERSION_4001
+	default MSM_ADSP_COMP if MSM_AMSS_VERSION_1320
+	default MSM_ADSP_COMP if MSM_AMSS_VERSION_1330
+	default MSM_ADSP_COMP if MSM_AMSS_VERSION_1340
+	default MSM_ADSP_COMP if MSM_AMSS_VERSION_1355
+	default MSM_ADSP_COMP if MSM_AMSS_VERSION_4110
+	default MSM_ADSP_COMP if MSM_AMSS_VERSION_4410
+
+	config MSM_ADSP
+	bool "MSM ADSP support"
+	help
+	  Provides access to ADSP modules from kernel and userspace.
+
+	config MSM_ADSP_COMP
+	bool "MSM ADSP support init info by RPC"
+	help
+	  Provides access to ADSP modules from kernel and userspace.
+
+endchoice
+
+config TROUT_H2W
+	tristate "HTC 2 Wire detection driver for TROUT"
+	default n
+	help
+	  Provides support for detecting HTC 2 wire devices, such as wired
+	  headset, on the trout platform. Can be used with the msm serial
+	  debugger, but not with serial console.
+
+config HTC_HEADSET
+	tristate "HTC 2 Wire detection driver"
+	default n
+	help
+	  Provides support for detecting HTC 2 wire devices, such as wired
+	  headset, on the trout platform. Can be used with the msm serial
+	  debugger, but not with serial console.
+
+config HTC_AUDIOJACK
+	tristate "Audio Jack detection driver"
+	depends on HTC_HEADSET
+	default n
+	help
+	  Provides support for detecting audio jack, such as 3.5mm
+	  earphone, on the android platform.
+
+config HTC_ACOUSTIC
+        tristate "HTC acoustic driver"
+        default y
+        help
+          The driver provide user space use shared memory allocate by using
+          RPC code.
+
+config OLD_HTC_ACOUSTIC
+	tristate "Old HTC acoustic driver"
+	default n
+	help
+	  The driver provide user space use shared memory by using
+	  fixed physical address.
+
+config WIFI_CONTROL_FUNC
+	bool "Enable WiFi control function abstraction"
+	help
+	  Enables Power/Reset/Carddetect function abstraction
+
+config WIFI_MEM_PREALLOC
+	depends on WIFI_CONTROL_FUNC
+	bool "Preallocate memory for WiFi buffers"
+	help
+	  Preallocates memory buffers for WiFi driver
+
+endif
