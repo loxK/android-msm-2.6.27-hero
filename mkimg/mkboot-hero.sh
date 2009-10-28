@@ -21,17 +21,17 @@ fi
 
 echo "Building ramdisk"
 
-echo mkbootfs ${BOOT_RAMDISK} | gzip > build/out/boot.img-ramdisk.cpio.gz
-if [ ! -f build/out/boot.img-ramdisk.cpio.gz ]; then
+mkbootfs ${BOOT_RAMDISK} | gzip > build/out/ramdisk.img
+if [ ! -f build/out/ramdisk.img ]; then
 	echo "Cannot build ramdisk!" ;
 	exit 1
 fi
 
 
 echo "Building boot.img"
-mkbootimg --kernel ${IMG_DIR_NAME}/zImage --ramdisk build/out/boot.img-ramdisk.cpio.gz --cmdline "no_console_suspend=1 console=null" -o build/out/boot.img-hero --base 0x19200000
+mkbootimg --kernel ${IMG_DIR_NAME}/zImage --ramdisk build/out/ramdisk.img --cmdline "no_console_suspend=1 console=null" -o build/out/boot.img-hero --base 0x19200000
 
-rm build/out/boot.img-ramdisk.cpio.gz
+rm build/out/ramdisk.img
 
 if [ ! -f build/out/boot.img-hero ]; then
 	echo "Cannot build boot.img!" ;
