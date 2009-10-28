@@ -1,0 +1,44 @@
+#!/bin/sh
+
+PROGDIR=`dirname $0`
+
+if test -z "$1"; then
+{
+	echo "Please specify a filename"
+	exit 1
+}
+fi
+
+if [ -e $1 ]; then
+{
+
+	DIR=`dirname "$1"`
+	FILE=`basename "$1"`
+
+	BASE=${FILE%%.*}
+	EXT=${FILE#*.} 
+
+	NEWFILE="$DIR/$BASE-signed.$EXT"
+
+	`java -classpath $PROGDIR/sign/testsign.jar testsign $1 $NEWFILE`
+	
+	if [ -e $NEWFILE ]; then
+	{
+		echo "DONE! File signed as $NEWFILE";
+	}
+	else
+	{
+		echo "Failed!"
+	}
+	fi
+
+}
+else
+{
+	echo "Incorrect filename"
+	exit 1
+}
+fi
+
+
+exit 0;
