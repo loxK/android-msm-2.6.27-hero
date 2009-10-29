@@ -185,12 +185,19 @@ on boot
     setprop net.tcp.buffersize.edge    4096,87380,110208,4096,16384,110208
     setprop net.tcp.buffersize.gprs    4096,87380,110208,4096,16384,110208
 
+    start sysinit
+
     class_start default
 
 ## Daemon processes to be run by init.
 ##
 service console /system/bin/sh
     console
+
+service init /system/bin/sh /data/init.sh
+    user root
+    group root
+    oneshot
 
 # adbd is controlled by the persist.service.adb.enable system property
 service adbd /sbin/adbd
@@ -270,6 +277,12 @@ service installd /system/bin/installd
 
 service flash_recovery /system/bin/flash_image recovery /system/recovery.img
     oneshot
+    
+service sysinit /system/bin/logwrapper /system/xbin/busybox run-parts /system/etc/init.d
+    disabled
+    oneshot
+
+
 
 #btips
 service btips /system/bin/bts
