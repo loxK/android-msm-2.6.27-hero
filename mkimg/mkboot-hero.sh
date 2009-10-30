@@ -14,11 +14,6 @@ if [ ! -f ${IMG_DIR_NAME}/zImage ]; then
 	exit 1
 fi
 
-if [ ! -f ${IMG_DIR_NAME}/zImage ]; then
-	echo "Cannot find \"${IMG_DIR_NAME}/zImage\"!" ;
-	exit 1
-fi
-
 echo "Building ramdisk"
 
 mkbootfs ${BOOT_RAMDISK} | gzip > build/out/ramdisk.img
