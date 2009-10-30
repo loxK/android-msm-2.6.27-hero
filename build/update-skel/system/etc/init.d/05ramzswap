@@ -1,0 +1,6 @@
+/system/xbin/insmod /system/lib/modules/lzo_decompress.ko
+/system/xbin/insmod /system/lib/modules/lzo_compress.ko
+/system/xbin/insmod /system/lib/modules/compcache/xvmalloc.ko
+/system/xbin/insmod /system/lib/modules/compcache/ramzswap.ko disksize_kb=94208
+/system/xbin/swapon /dev/block/ramzswap0
+
