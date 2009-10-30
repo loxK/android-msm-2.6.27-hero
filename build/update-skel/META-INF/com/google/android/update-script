@@ -1,7 +1,9 @@
 format BOOT:
+
 show_progress 0.1 0
 copy_dir PACKAGE:system SYSTEM:
-show_progress 0.5 0
+show_progress 0.1 10
+
 show_progress 0.2 0
 write_raw_image PACKAGE:boot.img BOOT:
 show_progress 0.2 10
