@@ -98,23 +98,37 @@
 
 static struct kmem_cache *ext4_pspace_cachep;
 static struct kmem_cache *ext4_ac_cachep;
+static struct kmem_cache *ext4_free_ext_cachep;
 
 #ifdef EXT4_BB_MAX_BLOCKS
 #undef EXT4_BB_MAX_BLOCKS
 #endif
 #define EXT4_BB_MAX_BLOCKS	30
 
-struct ext4_free_metadata {
+struct ext4_free_data {
+	/* this link the free block
+	 * information from group_info
+	 */
+	struct rb_node node;
+
+	/* group this free block
+	 * extent belong
+	 */
 	ext4_group_t group;
-	unsigned short num;
-	ext4_grpblk_t  blocks[EXT4_BB_MAX_BLOCKS];
+
+	/* free block extent */
+	ext4_grpblk_t start_blk;
+	ext4_grpblk_t count;
+
+	/* this link the free block
+	 * information from ext4_sb_info
+	 */
 	struct list_head list;
 };
 
 struct ext4_group_info {
 	unsigned long	bb_state;
-	unsigned long	bb_tid;
-	struct ext4_free_metadata *bb_md_cur;
+	struct rb_root  bb_free_root;
 	unsigned short	bb_first_free;
 	unsigned short	bb_free;
 	unsigned short	bb_fragments;
@@ -257,7 +271,6 @@ static void ext4_mb_store_history(struct ext4_allocation_context *ac);
 
 #define in_range(b, first, len)	((b) >= (first) && (b) <= (first) + (len) - 1)
 
-static struct proc_dir_entry *proc_root_ext4;
 struct buffer_head *read_block_bitmap(struct super_block *, ext4_group_t);
 
 static void ext4_mb_generate_from_pa(struct super_block *sb, void *bitmap,

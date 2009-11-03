@@ -279,6 +279,11 @@ int blkdev_ioctl(struct inode *inode, struct file *file, unsigned cmd,
 			return -EFAULT;
 		return 0;
 	}
+	case BLKDUMPUSEDBUFFERS:
+		if (!capable(CAP_SYS_ADMIN))
+			return -EACCES;
+		dump_used_buffers(bdev);
+		return 0;
 	}
 
 	lock_kernel();

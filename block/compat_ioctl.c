@@ -786,6 +786,7 @@ long compat_blkdev_ioctl(struct file *file, unsigned cmd, unsigned long arg)
 	switch (cmd) {
 	case HDIO_GETGEO:
 		return compat_hdio_getgeo(disk, bdev, compat_ptr(arg));
+	case BLKDUMPUSEDBUFFERS:
 	case BLKFLSBUF:
 	case BLKROSET:
 	/*
