@@ -1,0 +1,60 @@
+ramzswap: Compressed RAM based swap device
+-------------------------------------------
+
+Project home: http://compcache.googlecode.com
+
+* Introduction
+This is a RAM based block device which acts as swap disk.
+Pages swapped to this device are compressed and stored in
+memory itself. See project home for use cases, performance
+numbers and lot more.
+
+Detailed documentation can also be found at:
+http://code.google.com/p/compcache/wiki/CompilingAndUsing
+
+ * Optional (HIGHLY RECOMMENDED):
+    * Apply patch found in the source directory
+      (patch_swap_notifier_generic_2.6.xx.diff) and just compile the kernel
+      as usual -- currently, patch is against 2.6.25 but it should apply to
+      slightly older/newer kernels too. This will enable 'swap free notify'
+      feature. This allows kernel to send callback to ramzswap as soon as a
+      swap slot becomes free. So, we can immediately free memory allocated
+      for this page, eliminating any stale data in (compressed) memory. This
+      patch is available only for compcache-0.5.4 or higher.
+    * Uncomment '#define CONFIG_SWAP_NOTIFIERS' in compat.h before compiling
+      compcache against this patched kernel. Otherwise, this swap notify
+      callback will not be used. 
+* Compiling
+ - Run 'make': this will compile all modules against your kernel.
+
+ - Following kernel modules are created:
+   - xvmalloc.ko
+   - ramzswap.ko
+
+* Using
+ - Following scipts are included
+   - use_ramzswap.sh [<disksize(KB)|<memlimit(KB)>] [<backing_swap>]
+     This loads all required modules and sets up swap device.
+     NOTE: script contains detailed documentation on parameters.
+
+   - unuse_ramzswap.sh
+     Unloads all modules and turns off ramzswap swap device.
+
+* Common Problems
+ - If you get lots of compile errors, make sure you have package for
+   kernel source installed. For e.g., on Fedora its 'kernel-devel' package.
+
+ - If (un)use_ramzswap scripts fail to work, refer to wiki:
+   http://code.google.com/p/compcache/wiki/CompilingAndUsing
+
+* Notes
+ - Statistics are exported via /proc/ramzswap
+
+Please consider using Issue Tracker:
+http://code.google.com/p/compcache/issues/list
+for reporting any bugs/feature requests.
+
+Cheers!
+Nitin Gupta
+EMail: ngupta at vflare dot org
+
