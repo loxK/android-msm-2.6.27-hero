@@ -2,4 +2,4 @@
 
 sync;
 setprop cm.filesystem.ready 1;
-
+echo "--- Filesystem ready";

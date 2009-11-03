@@ -5,6 +5,7 @@ echo "--- Enabling Compcache Ramzswap";
 insmod /system/lib/modules/lzo_decompress.ko
 insmod /system/lib/modules/lzo_compress.ko
 insmod /system/lib/modules/compcache/xvmalloc.ko
-insmod /system/lib/modules/compcache/ramzswap.ko disksize_kb=94208
-swapon /dev/block/ramzswap0
+insmod /system/lib/modules/compcache/ramzswap.ko disksize_kb=81920
+/system/xbin/swapon /dev/block/ramzswap0
+echo "--- Done.";
 

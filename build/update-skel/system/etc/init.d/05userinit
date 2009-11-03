@@ -6,10 +6,13 @@ then
     busybox chmod +x /sdcard/userinit.sh;
     /system/bin/sh /sdcard/userinit.sh;
     setprop cm.userinit.active 1;
+    echo "--- Done.";
 fi;
 
 if [ -d /sdcard/userinit.d ];
 then
+    echo "--- Executing userinit.d sripts";
     busybox run-parts /sdcard/userinit.d;
     setprop cm.userinit.active 1;
+    echo "--- Done.";
 fi;
