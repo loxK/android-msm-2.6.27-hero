@@ -2,6 +2,7 @@ format BOOT:
 
 show_progress 0.1 0
 copy_dir PACKAGE:system SYSTEM:
+set_perm_recursive 0 2000 0755 0755 SYSTEM:etc/init.d
 show_progress 0.1 10
 
 show_progress 0.2 0
