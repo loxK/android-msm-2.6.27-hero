@@ -1584,7 +1584,7 @@ static struct cftype files[] = {
 		.name = "cpus",
 		.read = cpuset_common_file_read,
 		.write_string = cpuset_write_resmask,
-		.max_write_len = (100U + 6 * NR_CPUS),
+		.max_write_len = (100U + 5 * NR_CPUS),
 		.private = FILE_CPULIST,
 	},
 
@@ -1592,7 +1592,7 @@ static struct cftype files[] = {
 		.name = "mems",
 		.read = cpuset_common_file_read,
 		.write_string = cpuset_write_resmask,
-		.max_write_len = (100U + 6 * MAX_NUMNODES),
+		.max_write_len = (100U + 5 * MAX_NUMNODES),
 		.private = FILE_MEMLIST,
 	},
 
